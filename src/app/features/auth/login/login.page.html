@@ -1,0 +1,95 @@
+<div class="login">
+  <aside class="brand">
+    <app-brand-logo [size]="44" />
+
+    <div class="brand__body">
+      <p class="brand__title">Todo os livros sob controle.</p>
+      <p class="brand__text">
+        Gerencie livros, exemplares, empréstimos e reservas em um só lugar, com
+        a disponibilidade real de cada exemplar.
+      </p>
+
+      <ul class="features">
+        <li>
+          <span class="features__icon"><mat-icon>inventory_2</mat-icon></span>
+          <span>Controle de acervo por exemplar</span>
+        </li>
+        <li>
+          <span class="features__icon"><mat-icon>swap_horiz</mat-icon></span>
+          <span>Empréstimos, devoluções e multas</span>
+        </li>
+        <li>
+          <span class="features__icon"><mat-icon>bookmark</mat-icon></span>
+          <span>Reservas com fila de espera</span>
+        </li>
+      </ul>
+    </div>
+
+    <p class="brand__footer">© {{ year }} GestBook</p>
+  </aside>
+
+  <main class="panel">
+    <section class="panel__inner">
+      <app-brand-logo class="panel__logo" [size]="40" />
+
+      <header class="panel__header">
+        <h1>Bem-vindo ao GestBook</h1>
+        <p>Entre com suas credenciais de funcionário.</p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuário</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-error>Informe o usuário</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+            (keyup)="checkCapsLock($event)"
+            (blur)="capsLockOn.set(false)"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePassword()"
+            [attr.aria-label]="hidePassword() ? 'Mostrar senha' : 'Ocultar senha'"
+            [attr.aria-pressed]="!hidePassword()"
+          >
+            <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          @if (capsLockOn()) {
+            <mat-hint>Caps Lock ativado</mat-hint>
+          }
+          <mat-error>Informe a senha</mat-error>
+        </mat-form-field>
+
+        @if (error()) {
+          <div class="alert" role="alert">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error() }}</span>
+          </div>
+        }
+
+        <button mat-flat-button class="submit" type="submit" [disabled]="loading()">
+          @if (loading()) {
+            <mat-spinner diameter="18" />
+            <span>Entrando…</span>
+          } @else {
+            <span>Entrar</span>
+          }
+        </button>
+      </form>
+
+      <p class="panel__footer">Acesso restrito a funcionários autorizados.</p>
+    </section>
+  </main>
+</div>
